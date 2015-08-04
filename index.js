@@ -21,12 +21,21 @@ client.on('error', function (err) {
 
 app.use(function* () {
 
+  var pathComponents;
+  var appName;
   var indexkey;
 
-  if (this.request.query.index_key) {
-    indexkey = process.env.APP_NAME +':'+ this.request.query.index_key;
+  pathComponents = this.request.path.split('/');
+  if (pathComponents < 2) {
+    appName = process.env.APP_NAME;
   } else {
-    indexkey = yield dbCo.get(process.env.APP_NAME +':current');
+    appName = pathComponents[1];
+  }
+
+  if (this.request.query.index_key) {
+    indexkey = appName +':'+ this.request.query.index_key;
+  } else {
+    indexkey = yield dbCo.get(appName +':current');
   }
   var index = yield dbCo.get(indexkey);
 
