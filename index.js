@@ -39,7 +39,11 @@ app.use(function* () {
   }
   var index = yield dbCo.get(indexkey);
 
-  this.body = index || '';
+  if (index) {
+    this.body = index;
+  } else {
+    this.status = 404;
+  }
 });
 
 app.listen(process.env.PORT || 3000);
