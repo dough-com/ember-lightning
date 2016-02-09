@@ -35,7 +35,8 @@ app.use(function* () {
   if (this.request.query.index_key) {
     indexkey = appName +':'+ this.request.query.index_key;
   } else {
-    indexkey = yield dbCo.get(appName +':current');
+    var identifier = yield dbCo.get(appName +':current');
+    indexkey = appName + ':' + identifier;
   }
   var index = yield dbCo.get(indexkey);
 
@@ -46,4 +47,7 @@ app.use(function* () {
   }
 });
 
-app.listen(process.env.PORT || 3000);
+var PORT = process.env.PORT || 3000;
+app.listen(PORT, function () {
+  console.log('ember-storm started on port ' + PORT);
+});
