@@ -1,13 +1,13 @@
 {
-  "name": "ember-lightning",
-  "description": "Ember lightning hosting for https://github.com/LevelbossMike/ember-deploy",
+  "name": "ember-storm",
+  "description": "Ember multiapp hosting for https://github.com/ember-cli/ember-cli-deploy",
   "keywords": [
     "ember",
+    "storm",
     "lightning",
     "hosting",
     "deploy"
   ],
-  "website": "http://philipheinser.ninja/",
   "addons": [
     "papertrail:choklad"
   ],

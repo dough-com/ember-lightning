@@ -1,33 +1,31 @@
-# ember-lightning
-Ember lightning hosting for https://github.com/ember-cli/ember-cli-deploy
+# ember-storm
+Ember multiapp hosting for https://github.com/ember-cli/ember-cli-deploy
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/philipheinser/ember-lightning)
+Fork of https://github.com/philipheinser/ember-lightning, which only supports 1 app per server instance.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/dough-com/ember-storm)
 
 # Docker support
 
-ember-lightning is also available as a docker container. To build the container run:
+ember-storm is also available as a docker container. To build the container run:
 
 ```shell
-docker build --tag ember-lightning .
+docker build --tag ember-storm .
 ```
 
 Then, to serve an ember-cli application run the container:
 
 ```shell
-docker run --name $APP_NAME --env APP_NAME=$APP_NAME --env REDIS_SERVER=your-redis-server.example.com ember-lightning:latest
+docker run --name ember-storm --env REDIS_HOST=your-redis-server.example.com ember-storm:latest
 ```
 
 The image responds to these environment variables:
 
-### `APP_NAME`
-
-The name of the application as deployed in Redis.
-
-### `REDIS_SERVER`
+### `REDIS_HOST`
 
 The hostname of the Redis server where ember-cli applications are deployed.
 This default to `redis` and so it is also possible to use Docker container
-links to connect the ember-lightning container to a running Redis container.
+links to connect the ember-storm container to a running Redis container.
 
 ### `REDIS_PORT`
 
