@@ -19,18 +19,27 @@ client.on('error', function (err) {
   console.log('Redis client error: ' + err);
 });
 
-app.use(function* () {
+var START_TIME = new Date();
 
-  var pathComponents;
-  var appName;
+app.use(function* (next) {
+  if (/^\/health(\.json)?$/.test(this.request.path)) {
+    this.status = 200;
+    this.type = 'application/json';
+    this.body = JSON.stringify({
+      'application-name': 'ember-storm',
+      'application-started-at': START_TIME,
+      'application-up-time': (Date.now() - START_TIME) / 1000
+    });
+  } else {
+    yield next;
+  }
+});
+
+app.use(function* () {
   var indexkey;
 
-  pathComponents = this.request.path.split('/');
-  if (pathComponents < 2) {
-    appName = process.env.APP_NAME;
-  } else {
-    appName = pathComponents[1];
-  }
+  var pathComponents = this.request.path.split('/');
+  var appName = pathComponents[1];
 
   if (this.request.query.index_key) {
     indexkey = appName +':'+ this.request.query.index_key;
@@ -38,10 +47,10 @@ app.use(function* () {
     var identifier = yield dbCo.get(appName +':current');
     indexkey = appName + ':' + identifier;
   }
-  var index = yield dbCo.get(indexkey);
+  var indexHtml = yield dbCo.get(indexkey);
 
-  if (index) {
-    this.body = index;
+  if (indexHtml) {
+    this.body = indexHtml;
   } else {
     this.status = 404;
   }
