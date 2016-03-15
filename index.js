@@ -36,18 +36,11 @@ app.use(function* (next) {
 });
 
 app.use(function* () {
-  var indexkey;
-
   var pathComponents = this.request.path.split('/');
   var appName = pathComponents[1];
 
-  if (this.request.query.index_key) {
-    indexkey = appName +':'+ this.request.query.index_key;
-  } else {
-    var identifier = yield dbCo.get(appName +':current');
-    indexkey = appName + ':' + identifier;
-  }
-  var indexHtml = yield dbCo.get(indexkey);
+  var indexKey = this.request.query.index_key || 'current-content'
+  var indexHtml = yield dbCo.get(appName + ':' + indexKey);
 
   if (indexHtml) {
     this.body = indexHtml;
