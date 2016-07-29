@@ -9,7 +9,7 @@ var app = koa(),
       process.env.REDIS_PORT,
       process.env.REDIS_HOST
     ),
-    dbCo = coRedis(client);
+    coClient = coRedis(client);
 
 if (process.env.REDIS_SECRET) {
   client.auth(process.env.REDIS_SECRET);
@@ -36,11 +36,17 @@ app.use(function* (next) {
 });
 
 app.use(function* () {
+  if (!client.ready) {
+    // Redis client should have started by now.
+    this.status = 500;
+    return;
+  }
+
   var pathComponents = this.request.path.split('/');
   var appName = pathComponents[1];
 
   var indexKey = this.request.query.index_key || 'current-content'
-  var indexHtml = yield dbCo.get(appName + ':' + indexKey);
+  var indexHtml = yield coClient.get(appName + ':' + indexKey);
 
   if (indexHtml) {
     this.body = indexHtml;
