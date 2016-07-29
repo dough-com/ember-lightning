@@ -4,7 +4,7 @@
   "description": "Ember multiapp hosting for https://github.com/ember-cli/ember-cli-deploy",
   "main": "index.js",
   "scripts": {
-    "start": "node --harmony index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -35,6 +35,6 @@
     "hiredis": "~0.4.1"
   },
   "engines": {
-    "node": "5.0.0"
+    "node": ">=5.0.0"
   }
 }
